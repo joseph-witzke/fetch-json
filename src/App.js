@@ -1,5 +1,31 @@
+import React, { useState, useEffect } from 'react';
+import Form from './Form';
+
 function App() {
-  return <div className='App'>Hello</div>;
+  const API_URL = 'https://jsonplaceholder.typicode.com/';
+
+  const [reqType, setReqType] = useState('users');
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await fetch(`${API_URL}${reqType}`);
+        const listItems = await response.json();
+        console.log(listItems);
+        setItems(listItems);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchItems();
+  }, [reqType]);
+
+  return (
+    <div className='App'>
+      <Form reqType={reqType} setReqType={setReqType} />
+    </div>
+  );
 }
 
 export default App;
